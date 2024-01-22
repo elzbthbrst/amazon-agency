@@ -1,32 +1,27 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Link, Outlet } from "react-router-dom";
+import { FC, useState } from "react";
+import AddPizzaForm from "./components/Form";
+import TPizza from "./models/pizza";
+import DisplayPizzas from "./components/DisplayPizzas";
 
-function App() {
+const App: FC = () => {
+  const [pizzaList, setPizzaList] = useState<TPizza[]>([]);
+
+  const addPizza = (newPizza: TPizza) => {
+    setPizzaList([...pizzaList, newPizza]);
+    
+  };
+  console.log(pizzaList);
+
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <div className="wrap">
+        <div className="heading">Наша Піццерія</div>
+        <AddPizzaForm addPizza={addPizza} />
+        <DisplayPizzas pizzaList={pizzaList} />
       </div>
-      <h1>Vite + React</h1>
-
-      <nav>
-        <Link to="/amazon-agency/">Home</Link>
-        {" | "}
-        <Link to="/amazon-agency/contact">Contact</Link>
-      </nav>
-
-      <Outlet />
-
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    </div>
   );
-}
+};
 
 export default App;
