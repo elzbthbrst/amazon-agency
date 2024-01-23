@@ -1,5 +1,5 @@
 type TPizza = {
-    id?: number,
+    id: number,
     title:string,
     price:number,
     img:string

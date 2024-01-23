@@ -9,8 +9,17 @@ const App: FC = () => {
 
   const addPizza = (newPizza: TPizza) => {
     setPizzaList([...pizzaList, newPizza]);
-    
   };
+  const updatePizza = (newPizza: TPizza) => {
+    setPizzaList(
+      pizzaList.map((pizza) => (pizza.id === newPizza.id ? newPizza : pizza))
+    );
+  };
+
+  const deletePizza = (id: number) => {
+    const newPizzasList = pizzaList.filter(pizza => pizza.id !== id)
+    setPizzaList(newPizzasList);
+  }
   console.log(pizzaList);
 
   return (
@@ -18,7 +27,10 @@ const App: FC = () => {
       <div className="wrap">
         <div className="heading">Наша Піццерія</div>
         <AddPizzaForm addPizza={addPizza} />
-        <DisplayPizzas pizzaList={pizzaList} />
+        <DisplayPizzas 
+        pizzaList={pizzaList} 
+        updatePizza ={updatePizza}
+        deletePizza = {deletePizza}/>
       </div>
     </div>
   );

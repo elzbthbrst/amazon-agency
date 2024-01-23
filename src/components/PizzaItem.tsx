@@ -1,10 +1,21 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import TPizza from "../models/pizza";
+import EditPizzaForm from "./EditPizzaForm";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 interface PizzaItemProps {
   pizza: TPizza;
+  updatePizza: (newPizza: TPizza) => void;
+  deletePizza: (id: number) => void;
 }
-const PizzaItem: FC<PizzaItemProps> = ({ pizza }) => {
+const PizzaItem: FC<PizzaItemProps> = ({ pizza, updatePizza, deletePizza }) => {
+  const [edit, setEdit] = useState<boolean>(false);
+
+  const handleToggleEdit = () => {
+    setEdit(!edit);
+  };
+  const handleDeletePizza = () => {
+    deletePizza(pizza.id)
+  };
   return (
     <div className="pizza">
       <img src={`/amazon-agency/images/${pizza.img}`} alt={pizza.title} />
@@ -12,9 +23,13 @@ const PizzaItem: FC<PizzaItemProps> = ({ pizza }) => {
       <span>{pizza.price}₴ </span>
 
       <div className="pizza-controls">
-        <AiFillEdit />
-        <AiOutlineDelete />
+        <AiFillEdit onClick={handleToggleEdit} />
+        <AiOutlineDelete onClick={handleDeletePizza}/>
       </div>
+      {edit ? <EditPizzaForm 
+      data={pizza} 
+      updatePizza = {updatePizza}
+      handleToggleEdit = {handleToggleEdit}/> : null}
     </div>
   );
 };
