@@ -1,10 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react";
 import "./styles.css";
-import TPizza from "../models/pizza";
-
-interface AddPizzaFormProps {
-  addPizza: (newPizza: TPizza) => void;
-}
+import { useAppDispatch } from "../hooks";
+import { addPizza } from "../store/pizzaSlice";
 
 const initialState = {
   title: "",
@@ -12,12 +9,13 @@ const initialState = {
   img: "",
 };
 
-const AddPizzaForm: FC<AddPizzaFormProps> = ({ addPizza }) => {
+const AddPizzaForm: FC = () => {
   const [newPizza, setNewPizza] = useState<{
     title: string;
     price: string;
     img: string;
   }>(initialState);
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,9 +25,9 @@ const AddPizzaForm: FC<AddPizzaFormProps> = ({ addPizza }) => {
     e.preventDefault();
     const { title, price, img } = newPizza;
     if (title && price && img) {
-      addPizza({ title, img, price: Number(price), id: Date.now() });
+      dispatch(addPizza({ title, img, price: Number(price), id: Date.now() }));
     }
-    setNewPizza(initialState)
+    setNewPizza(initialState);
   };
   return (
     <form onSubmit={handleSubmit}>

@@ -2,19 +2,16 @@ import { FC, useState } from "react";
 import TPizza from "../models/pizza";
 import EditPizzaForm from "./EditPizzaForm";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { useAppDispatch } from "../hooks";
+import { deletePizza } from "../store/pizzaSlice";
 interface PizzaItemProps {
   pizza: TPizza;
-  updatePizza: (newPizza: TPizza) => void;
-  deletePizza: (id: number) => void;
 }
-const PizzaItem: FC<PizzaItemProps> = ({ pizza, updatePizza, deletePizza }) => {
+const PizzaItem: FC<PizzaItemProps> = ({ pizza }) => {
   const [edit, setEdit] = useState<boolean>(false);
-
+  const dispatch = useAppDispatch();
   const handleToggleEdit = () => {
     setEdit(!edit);
-  };
-  const handleDeletePizza = () => {
-    deletePizza(pizza.id)
   };
   return (
     <div className="pizza">
@@ -24,12 +21,11 @@ const PizzaItem: FC<PizzaItemProps> = ({ pizza, updatePizza, deletePizza }) => {
 
       <div className="pizza-controls">
         <AiFillEdit onClick={handleToggleEdit} />
-        <AiOutlineDelete onClick={handleDeletePizza}/>
+        <AiOutlineDelete onClick={() => dispatch(deletePizza(pizza.id))} />
       </div>
-      {edit ? <EditPizzaForm 
-      data={pizza} 
-      updatePizza = {updatePizza}
-      handleToggleEdit = {handleToggleEdit}/> : null}
+      {edit ? (
+        <EditPizzaForm data={pizza} handleToggleEdit={handleToggleEdit} />
+      ) : null}
     </div>
   );
 };

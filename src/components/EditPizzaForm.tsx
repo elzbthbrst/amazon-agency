@@ -1,15 +1,17 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react";
 import "./styles.css";
 import TPizza from "../models/pizza";
+import { useAppDispatch } from "../hooks";
+import { updatePizza } from "../store/pizzaSlice";
 
 interface EditPizzaFormProps {
   data: TPizza;
-  updatePizza: (newPizza: TPizza) => void;
   handleToggleEdit: () => void;
 }
 
-const EditPizzaForm: FC<EditPizzaFormProps> = ({ data, updatePizza, handleToggleEdit }) => {
+const EditPizzaForm: FC<EditPizzaFormProps> = ({ data, handleToggleEdit }) => {
   const [editPizza, setEditPizza] = useState<TPizza>(data);
+  const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,8 +21,8 @@ const EditPizzaForm: FC<EditPizzaFormProps> = ({ data, updatePizza, handleToggle
     e.preventDefault();
     const { title, price, img } = editPizza;
     if (title && price && img) {
-      updatePizza(editPizza);
-      handleToggleEdit()
+      dispatch(updatePizza(editPizza));
+      handleToggleEdit();
     }
   };
   return (
